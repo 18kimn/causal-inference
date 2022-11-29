@@ -1,0 +1,24 @@
+#! /bin/sh
+
+bib=${2:-"causal-inference.bib"}
+bib=$(readlink -f $bib) # get full path
+
+csl=${4:-"chicago.csl"}
+csl=$(readlink -f $csl)
+
+# usage:
+# render <input_file> <output_file>
+file_basename=$(basename $1 .md)
+outfile=${2:-$file_basename.pdf}
+pandoc -V geometry:margin=1in \
+  -f markdown \
+  -o $outfile \
+  --bibliography=$bib \
+  --csl=$csl \
+  --filter pandoc-include \
+  --citeproc \
+  --variable urlcolor=blue \
+  -V fontsize=12pt \
+  -V mainfont="Koreamond" \
+  --pdf-engine=xelatex \
+  $1
