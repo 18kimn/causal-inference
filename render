@@ -12,7 +12,10 @@ file_basename=$(basename $1 .md)
 outfile=${2:-$file_basename.pdf}
 pandoc -V geometry:margin=1in \
   -f markdown \
+  --standalone \
   -o $outfile \
+  -L wordcount.lua \
+  -M wordcount=process \
   --bibliography=$bib \
   --csl=$csl \
   --filter pandoc-include \
@@ -22,3 +25,4 @@ pandoc -V geometry:margin=1in \
   -V mainfont="Koreamond" \
   --pdf-engine=xelatex \
   $1
+
